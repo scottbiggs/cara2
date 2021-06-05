@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CameraFragment">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <!--
+        Included because older devices won't display the
+        camera icon correctly.  This gives them something
+        to see.
+    -->
+    <View
+        android:id="@+id/button_bg"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="42dp"
+        android:background="#444"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        />
 
     <Button
         android:id="@+id/camera_capture_button"
@@ -25,7 +35,6 @@
         android:foreground="@android:drawable/ic_menu_camera"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        />
+        tools:ignore="UnusedAttribute" />
 
-    </RelativeLayout>
-</FrameLayout>
+</RelativeLayout>
