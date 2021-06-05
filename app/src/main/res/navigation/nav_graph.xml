@@ -5,6 +5,7 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
 
+    <!-- Login Fragment -->
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.sleepfuriously.cara2.login.LoginFragment"
@@ -17,6 +18,8 @@
             app:popUpToInclusive="true"
             />
     </fragment>
+
+    <!-- Camera Fragment -->
     <fragment
         android:id="@+id/cameraFragment"
         android:name="com.sleepfuriously.cara2.CameraFragment"
@@ -26,6 +29,8 @@
             android:id="@+id/action_cameraFragment_to_pictureTakenFragment"
             app:destination="@id/pictureTakenFragment" />
     </fragment>
+
+    <!-- After Picture was Taken Fragment -->
     <fragment
         android:id="@+id/pictureTakenFragment"
         android:name="com.sleepfuriously.cara2.PictureTakenFragment"
@@ -38,6 +43,8 @@
             android:id="@+id/action_pictureTakenFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
     </fragment>
+
+    <!-- Send Data Fragment -->
     <fragment
         android:id="@+id/sendDataFragment"
         android:name="com.sleepfuriously.cara2.SendDataFragment"

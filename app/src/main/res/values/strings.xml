@@ -17,4 +17,17 @@
     <string name="exit_app_msg">Do you want to exit this program?</string>
     <string name="exit_app_confirm">Exit</string>
     <string name="exit_app_cancel">Cancel</string>
+
+    <!-- LoginFragment -->
+    <string name="login_frag_title">Login</string>
+
+    <!-- CameraFragment -->
+    <string name="camera_frag_title">Take Photo</string>
+
+    <!-- PictureTakenFragment -->
+    <string name="picture_taken_frag_title">Approve Photo</string>
+
+    <!-- SendDataFragment -->
+    <string name="send_data_frag_title">Send Photo</string>
+
 </resources>

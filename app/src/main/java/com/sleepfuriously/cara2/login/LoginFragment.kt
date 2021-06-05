@@ -49,6 +49,8 @@ class LoginFragment : Fragment() {
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
+        requireActivity().title = getString(R.string.login_frag_title)
+
         val usernameEditText = binding.username
         val passwordEditText = binding.password
         val loginButton = binding.login

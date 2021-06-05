@@ -37,6 +37,11 @@ class SendDataFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_send_data_layout, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().title = getString(R.string.camera_frag_title)
+    }
+
     companion object {
         /**
          * Use this factory method to create a new instance of

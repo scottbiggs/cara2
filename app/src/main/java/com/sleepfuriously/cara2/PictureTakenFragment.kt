@@ -37,6 +37,12 @@ class PictureTakenFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_picture_taken_layout, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().title = getString(R.string.picture_taken_frag_title)
+    }
+
     companion object {
         /**
          * Use this factory method to create a new instance of

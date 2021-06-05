@@ -78,6 +78,12 @@ class CameraFragment : Fragment() {
     }
 
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().title = getString(R.string.camera_frag_title)
+    }
+
     private fun displayExitMessage() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setMessage(R.string.exit_app_msg)
