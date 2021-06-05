@@ -1,28 +1,21 @@
 package com.sleepfuriously.cara2
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.content.DialogInterface
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
-import android.Manifest
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.util.concurrent.Executors
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_camera_layout.*
 import java.io.File
-import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -37,8 +30,6 @@ import java.util.concurrent.ExecutorService
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-
-typealias LumaListener = (luma: Double) -> Unit
 
 
 /**
@@ -103,7 +94,7 @@ class CameraFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
             displayExitMessage()
         }
     }
@@ -120,6 +111,7 @@ class CameraFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.v(TAG, "onViewCreated()")
 
         requireActivity().title = getString(R.string.camera_frag_title)
 
@@ -206,7 +198,7 @@ class CameraFragment : Fragment() {
 
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 
-        cameraProviderFuture.addListener(Runnable {
+        cameraProviderFuture.addListener({
             // Used to bind the lifecycle of cameras to the lifecycle owner, eliminating the
             // need to worry about starting/stopping the camera (not that that was a big deal anyway)
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
