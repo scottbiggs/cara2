@@ -1,23 +1,34 @@
 package com.sleepfuriously.cara2.login
 
+import android.Manifest
+import android.content.pm.PackageManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import com.sleepfuriously.cara2.MainActivity
 import com.sleepfuriously.cara2.databinding.FragmentLoginLayoutBinding
 
 import com.sleepfuriously.cara2.R
 
 class LoginFragment : Fragment() {
+
+    //---------------------
+    //  constants
+    //---------------------
+
+    companion object {
+        private const val TAG = "LoginFragment"
+    }
+
 
     //---------------------
     //  data
@@ -30,8 +41,9 @@ class LoginFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+
     //---------------------
-    //  functions
+    //  overridden functions
     //---------------------
 
     override fun onCreateView(
@@ -92,7 +104,19 @@ class LoginFragment : Fragment() {
                 passwordEditText.text.toString()
             )
         }
+
+        (requireActivity() as MainActivity).setupCameraPermissions()
+    } // onViewCreated()
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
+
+    //---------------------
+    //  private functions
+    //---------------------
 
     /**
      * Does any UI changes once a successful login is completed.  In this case it's
@@ -109,8 +133,5 @@ class LoginFragment : Fragment() {
         Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+
 }
