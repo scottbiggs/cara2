@@ -23,6 +23,7 @@
         android:background="#444"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:focusable="false"
         />
 
     <Button

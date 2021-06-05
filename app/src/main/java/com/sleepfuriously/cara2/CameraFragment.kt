@@ -1,5 +1,6 @@
 package com.sleepfuriously.cara2
 
+import android.media.MediaActionSound
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -82,6 +83,8 @@ class CameraFragment : Fragment() {
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
 
+    private val mSound = MediaActionSound()
+
 
     //---------------------------
     //  overridden functions
@@ -109,8 +112,8 @@ class CameraFragment : Fragment() {
     }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(v: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(v, savedInstanceState)
         Log.v(TAG, "onViewCreated()")
 
         requireActivity().title = getString(R.string.camera_frag_title)
@@ -175,8 +178,9 @@ class CameraFragment : Fragment() {
 
         // Set up image capture listener, which is triggered after photo has
         // been taken
-        imageCapture.takePicture(
-            outputOptions, ContextCompat.getMainExecutor(requireContext()), object : ImageCapture.OnImageSavedCallback {
+        imageCapture.takePicture(outputOptions,
+                                 ContextCompat.getMainExecutor(requireContext()),
+                                 object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
                     Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
                 }
@@ -188,6 +192,9 @@ class CameraFragment : Fragment() {
                     Log.d(TAG, msg)
                 }
             })
+
+        // play some sound
+        mSound.play(MediaActionSound.SHUTTER_CLICK)
     }
 
 

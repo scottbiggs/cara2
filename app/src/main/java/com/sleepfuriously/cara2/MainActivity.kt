@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         Log.v(TAG, "onCreate()")
     }
 
-    //
+
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>,
                                             grantResults: IntArray) {
