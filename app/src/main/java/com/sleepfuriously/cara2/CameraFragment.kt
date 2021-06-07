@@ -11,10 +11,16 @@ import androidx.appcompat.app.AlertDialog
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import java.util.concurrent.Executors
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_camera_layout.*
 import java.io.File
 import java.text.SimpleDateFormat
@@ -76,6 +82,10 @@ class CameraFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var mViewModel : CameraViewModel
+
+    lateinit var mNavController : NavController
+
     //
     //  camera stuff
     //
@@ -100,6 +110,9 @@ class CameraFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             displayExitMessage()
         }
+
+        mNavController = findNavController()
+
     }
 
 
@@ -116,8 +129,13 @@ class CameraFragment : Fragment() {
         super.onViewCreated(v, savedInstanceState)
         Log.v(TAG, "onViewCreated()")
 
+        // set the title
         requireActivity().title = getString(R.string.camera_frag_title)
 
+        // get a copy of the CameraViewModel
+        mViewModel = ViewModelProvider(requireActivity()).get(CameraViewModel::class.java)
+
+        // get the camera view going
         startCamera()
 
         // Set up the listener for take photo button
@@ -166,6 +184,33 @@ class CameraFragment : Fragment() {
         // in another thread, remember?)
         val imageCapture = mImageCapture ?: return
 
+        // play some sound
+        mSound.play(MediaActionSound.SHUTTER_CLICK)
+
+        // Set up image capture listener, which is triggered after photo has
+        // been taken.
+        // This version waits until the picture is captured to memory
+        imageCapture.takePicture(ContextCompat.getMainExecutor(requireContext()),
+                                 object : ImageCapture.OnImageCapturedCallback() {
+
+                                     override fun onCaptureSuccess(image: ImageProxy) {
+                                         super.onCaptureSuccess(image)
+                                         Log.v(TAG, "image successfully captured")
+
+                                         // pass the image along to the view model
+                                         mViewModel.mImageProxyLiveData.value = image
+
+                                         // and take us to the next fragment
+                                         findNavController().navigate(R.id.action_cameraFragment_to_pictureTakenFragment)
+                                     }
+
+                                     override fun onError(e: ImageCaptureException) {
+                                         Log.e(TAG, "Failed to capture image!\ne = ${e.message}")
+                                         super.onError(e)
+                                     }
+                                 })
+
+/*
         // Create time-stamped output file to hold the image
         val photoFile = File(
             outputDirectory,
@@ -176,25 +221,31 @@ class CameraFragment : Fragment() {
         // This will hold the photo (if successful).
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
 
-        // Set up image capture listener, which is triggered after photo has
-        // been taken
+
+        // this version waits until the picture is saved
         imageCapture.takePicture(outputOptions,
                                  ContextCompat.getMainExecutor(requireContext()),
                                  object : ImageCapture.OnImageSavedCallback {
+                // Fail!
                 override fun onError(exc: ImageCaptureException) {
                     Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
                 }
 
+                // Success
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
                     val msg = "Photo capture succeeded: $savedUri"
                     Toast.makeText(requireActivity().baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
+
+                    // pass the image along to the view model
+                    mViewModel.mImageProxyLiveData.value = imageCapture.
+
+                    // and take us to the next fragment
+                    findNavController().navigate(R.id.action_cameraFragment_to_pictureTakenFragment)
                 }
             })
-
-        // play some sound
-        mSound.play(MediaActionSound.SHUTTER_CLICK)
+*/
     }
 
 

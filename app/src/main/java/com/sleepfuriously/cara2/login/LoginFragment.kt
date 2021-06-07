@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import com.sleepfuriously.cara2.CameraViewModel
 import com.sleepfuriously.cara2.MainActivity
 import com.sleepfuriously.cara2.databinding.FragmentLoginLayoutBinding
 
@@ -33,6 +34,9 @@ class LoginFragment : Fragment() {
 
     private lateinit var loginViewModel: LoginViewModel
     private var _binding: FragmentLoginLayoutBinding? = null
+
+    /** name of the user as they typed it in */
+    private lateinit var mUserName : String
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -62,7 +66,7 @@ class LoginFragment : Fragment() {
 
         requireActivity().title = getString(R.string.login_frag_title)
 
-        val usernameEditText = binding.username
+        val usernameEditText = binding.usernameEt
         val passwordEditText = binding.password
         val loginButton = binding.login
         val loadingProgressBar = binding.loading
@@ -92,14 +96,16 @@ class LoginFragment : Fragment() {
                 loginResult.success?.let {
                     // Successful login, yay!
                     updateUiWithUser(it)
+                    saveDataToViewModel()
                     findNavController().navigate(R.id.action_loginFragment_to_cameraFragment)
                 }
             })
 
         loginButton.setOnClickListener {
             loadingProgressBar.visibility = View.VISIBLE
+            mUserName = usernameEditText.text.toString()
             loginViewModel.login(
-                usernameEditText.text.toString(),
+                mUserName,
                 passwordEditText.text.toString()
             )
         }
@@ -133,4 +139,11 @@ class LoginFragment : Fragment() {
     }
 
 
+    /**
+     * Saves important info to the CameraViewModel.
+     */
+    private fun saveDataToViewModel() {
+        val cameraViewModel = ViewModelProvider(this).get(CameraViewModel::class.java)
+        cameraViewModel.mNameLiveData.value = mUserName
+    }
 }
