@@ -65,9 +65,6 @@ class PictureTakenFragment : Fragment() {
 
         // set username textview
         val nameTv = view.findViewById<TextView>(R.id.username_tv)
-
-        // todo: so, the viewmodel doesn't have the right name here!  Sigh.
-//        nameTv.text = mCameraViewModel.getUserName()
         nameTv.text = mCameraViewModel.mNameLiveData.value.toString()
 
         // set image

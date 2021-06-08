@@ -38,18 +38,6 @@ class CameraViewModel : ViewModel() {
     //  public functions
     //-----------------
 
-//    fun saveUserName(newName : String) {
-//        mNameLiveData.value = newName
-//        Log.d(TAG, "name changed to ${mNameLiveData.value.toString()}, I am $this")
-//    }
-
-//    fun getUserName() : String {
-//        Log.d(TAG, "returning name ${mNameLiveData.value.toString()}, I am $this")
-//        return mNameLiveData.value.toString()
-//    }
-
-
-
     override fun onCleared() {
         Log.d(TAG, "onCleared(), I am $this")
         super.onCleared()

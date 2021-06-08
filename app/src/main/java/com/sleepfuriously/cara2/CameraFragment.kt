@@ -148,11 +148,6 @@ class CameraFragment : Fragment() {
         cameraExecutor = Executors.newSingleThreadExecutor()
 
         mViewFinder = v.findViewById(R.id.viewFinder)
-
-        Toast.makeText(requireContext(), "username = " + mCameraViewModel.mNameLiveData.value.toString(), Toast.LENGTH_SHORT).show()
-//        Toast.makeText(requireContext(), "username = ${mCameraViewModel.getUserName()}", Toast.LENGTH_SHORT).show()
-        Log.d(TAG, "onViewCreated(), viewmodel username = ${mCameraViewModel.mNameLiveData.value.toString()}")
-//        Log.d(TAG, "onViewCreated(), viewmodel username = ${mCameraViewModel.getUserName()}")
     }
 
 
@@ -310,6 +305,5 @@ class CameraFragment : Fragment() {
             requireActivity().filesDir
         }
     }
-
 
 }

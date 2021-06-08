@@ -69,11 +69,6 @@ class LoginFragment : Fragment() {
             .get(LoginViewModel::class.java)
 
         mCameraViewModel = ViewModelProvider(requireActivity()).get((CameraViewModel::class.java))
-//        mCameraViewModel = ViewModelProvider(this).get(CameraViewModel::class.java)
-//        mCameraViewModel = activity?.run {
-//            ViewModelProviders.of(this).get(CameraViewModel::class.java)
-//        } ?: throw Exception("Invalid Activtiy")
-
 
         requireActivity().title = getString(R.string.login_frag_title)
 
@@ -159,6 +154,5 @@ class LoginFragment : Fragment() {
      */
     private fun saveDataToViewModel() {
         mCameraViewModel.mNameLiveData.value = mUserName
-//        mCameraViewModel.saveUserName(mUserName)
     }
 }
