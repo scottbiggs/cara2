@@ -110,7 +110,6 @@ class CameraFragment : Fragment() {
         }
 
         mNavController = findNavController()
-
     }
 
 

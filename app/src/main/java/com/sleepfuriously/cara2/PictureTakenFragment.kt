@@ -1,28 +1,36 @@
 package com.sleepfuriously.cara2
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.ExifInterface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.camera.core.ImageProxy
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import java.nio.ByteBuffer
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+
 
 /**
- * A simple [Fragment] subclass.
- * Use the [PictureTakenFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * Fragment that lands immediately after the user takes a picture.
+ *
+ * The point here is to show the user the picture, ask if he wants to add
+ * any info/text to the picture, and provide a way to send off the data.
  */
 class PictureTakenFragment : Fragment() {
+
+    //-------------------------------
+    //  constants
+    //-------------------------------
+
+    private val TAG = "PictureTakenFragment"
 
     //-------------------------------
     //  data
@@ -30,23 +38,11 @@ class PictureTakenFragment : Fragment() {
 
     private lateinit var mCameraViewModel : CameraViewModel
 
-
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var mImageProxy: ImageProxy
 
     //-------------------------------
     //  functions
     //-------------------------------
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,18 +60,16 @@ class PictureTakenFragment : Fragment() {
         mCameraViewModel = ViewModelProvider(requireActivity()).get(CameraViewModel::class.java)
 
         // set username textview
-        val nameTv = view.findViewById<TextView>(R.id.username_tv)
-        nameTv.text = mCameraViewModel.mNameLiveData.value.toString()
+//        val nameTv = view.findViewById<TextView>(R.id.username_tv)
+//        nameTv.text = mCameraViewModel.mNameLiveData.value.toString()
 
         // set image
-//        val photoIv = view.findViewById<ImageView>(R.id.pic_iv)
-//        val bitmap = convertImageProxyToBitmap(mViewModel.mImageProxyLiveData.value!!)
-//        photoIv.setImageBitmap(bitmap)
-//
-//        mViewModel.mImageProxyLiveData.observe(requireActivity(), { // is this necessary?
-//            val bitmap2 = convertImageProxyToBitmap(it)
-//            photoIv.setImageBitmap(bitmap2)
-//        })
+        mImageProxy = mCameraViewModel.mImageProxyLiveData.value!!
+        // And put that image into the imageview
+        val photoIv = view.findViewById<ImageView>(R.id.pic_iv)
+        val bitmap = convertImageProxyToBitmap(mImageProxy)
+        photoIv.setImageBitmap(bitmap)
+        photoIv.rotation = getRotation(mImageProxy)
     }
 
 
@@ -92,23 +86,31 @@ class PictureTakenFragment : Fragment() {
     }
 
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PictureTakenFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PictureTakenFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun getRotation(imageProxy : ImageProxy) : Float {
+        Log.d(TAG, "getRotation = ${imageProxy.imageInfo.rotationDegrees}")
+        return imageProxy.imageInfo.rotationDegrees.toFloat()
     }
+
+
+
+//    companion object {
+//        /**
+//         * Use this factory method to create a new instance of
+//         * this fragment using the provided parameters.
+//         *
+//         * @param param1 Parameter 1.
+//         * @param param2 Parameter 2.
+//         * @return A new instance of fragment PictureTakenFragment.
+//         */
+//        // TODO: Rename and change types and number of parameters
+//        @JvmStatic
+//        fun newInstance(param1: String, param2: String) =
+//            PictureTakenFragment().apply {
+//                arguments = Bundle().apply {
+//                    putString(ARG_PARAM1, param1)
+//                    putString(ARG_PARAM2, param2)
+//                }
+//            }
+//    }
+
 }

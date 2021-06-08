@@ -7,31 +7,18 @@
     tools:context=".PictureTakenFragment">
 
 
-    <TextView
-        android:id="@+id/username_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        tools:text="userName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/pic_iv"
-        app:layout_constraintTop_toTopOf="@+id/pic_iv" />
-
     <ImageView
         android:id="@+id/pic_iv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:scaleType="fitStart"
-        app:layout_constraintBottom_toTopOf="@+id/guideline5"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/picture_taken_frag_image_desc"
+        android:scaleType="center"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        android:contentDescription="@string/picture_taken_frag_image_desc"
         tools:src="@tools:sample/avatars" />
 
     <Button
@@ -50,25 +37,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:inputType="text"
         android:hint="@string/picture_taken_frag_hint"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:importantForAutofill="no"
+        android:scrollHorizontally="false"
+        android:inputType="text|textMultiLine"
+        app:layout_constraintEnd_toEndOf="@+id/pic_iv"
         app:layout_constraintStart_toStartOf="@+id/pic_iv"
-        app:layout_constraintTop_toBottomOf="@+id/pic_iv"
-        android:importantForAutofill="no" />
+        app:layout_constraintTop_toBottomOf="@+id/pic_iv" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
 </androidx.constraintlayout.widget.ConstraintLayout>
