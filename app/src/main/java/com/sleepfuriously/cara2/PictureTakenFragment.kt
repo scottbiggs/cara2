@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.camera.core.ImageProxy
 import androidx.lifecycle.ViewModelProvider
@@ -29,7 +28,7 @@ class PictureTakenFragment : Fragment() {
     //  data
     //-------------------------------
 
-    private lateinit var mViewModel : CameraViewModel
+    private lateinit var mCameraViewModel : CameraViewModel
 
 
     // TODO: Rename and change types of parameters
@@ -46,10 +45,8 @@ class PictureTakenFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-
-        mViewModel = ViewModelProvider(this).get(CameraViewModel::class.java)
-
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,17 +61,14 @@ class PictureTakenFragment : Fragment() {
 
         requireActivity().title = getString(R.string.picture_taken_frag_title)
 
-
+        mCameraViewModel = ViewModelProvider(requireActivity()).get(CameraViewModel::class.java)
 
         // set username textview
         val nameTv = view.findViewById<TextView>(R.id.username_tv)
 
         // todo: so, the viewmodel doesn't have the right name here!  Sigh.
-        nameTv.text = mViewModel.mNameLiveData.value.toString()
-
-        mViewModel.mNameLiveData.observe(requireActivity(), {       // is this necessary?
-            nameTv.text = it.toString()
-        })
+//        nameTv.text = mCameraViewModel.getUserName()
+        nameTv.text = mCameraViewModel.mNameLiveData.value.toString()
 
         // set image
 //        val photoIv = view.findViewById<ImageView>(R.id.pic_iv)

@@ -13,10 +13,7 @@
         tools:layout="@layout/fragment_login_layout" >
         <action
             android:id="@+id/action_loginFragment_to_cameraFragment"
-            app:destination="@id/cameraFragment"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true"
-            />
+            app:destination="@id/cameraFragment" />
     </fragment>
 
     <!-- Camera Fragment -->
@@ -28,10 +25,10 @@
         <action
             android:id="@+id/action_cameraFragment_to_pictureTakenFragment"
             app:destination="@id/pictureTakenFragment" />
-        <argument
-            android:name="userName"
-            app:argType="string"
-            android:defaultValue='"cara is sweet"' />
+<!--        <argument-->
+<!--            android:name="userName"-->
+<!--            app:argType="string"-->
+<!--            android:defaultValue='"cara is sweet"' />-->
     </fragment>
 
     <!-- After Picture was Taken Fragment -->

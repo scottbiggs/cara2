@@ -10,7 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.sleepfuriously.cara2.CameraFragmentDirections
 import com.sleepfuriously.cara2.CameraViewModel
 import com.sleepfuriously.cara2.MainActivity
 import com.sleepfuriously.cara2.databinding.FragmentLoginLayoutBinding
@@ -42,6 +44,8 @@ class LoginFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private lateinit var mCameraViewModel: CameraViewModel
+
 
     //---------------------
     //  overridden functions
@@ -61,8 +65,15 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.v(TAG, "onViewCreated()")
 
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
+        loginViewModel = ViewModelProvider(requireActivity(), LoginViewModelFactory())
             .get(LoginViewModel::class.java)
+
+        mCameraViewModel = ViewModelProvider(requireActivity()).get((CameraViewModel::class.java))
+//        mCameraViewModel = ViewModelProvider(this).get(CameraViewModel::class.java)
+//        mCameraViewModel = activity?.run {
+//            ViewModelProviders.of(this).get(CameraViewModel::class.java)
+//        } ?: throw Exception("Invalid Activtiy")
+
 
         requireActivity().title = getString(R.string.login_frag_title)
 
@@ -97,6 +108,10 @@ class LoginFragment : Fragment() {
                     // Successful login, yay!
                     updateUiWithUser(it)
                     saveDataToViewModel()
+
+                    Log.d(TAG, "about to go to Camera Fragment. view model username = ${mCameraViewModel.mNameLiveData.value.toString()}")
+
+                    // add some data to the navigation system
                     findNavController().navigate(R.id.action_loginFragment_to_cameraFragment)
                 }
             })
@@ -143,7 +158,7 @@ class LoginFragment : Fragment() {
      * Saves important info to the CameraViewModel.
      */
     private fun saveDataToViewModel() {
-        val cameraViewModel = ViewModelProvider(this).get(CameraViewModel::class.java)
-        cameraViewModel.mNameLiveData.value = mUserName
+        mCameraViewModel.mNameLiveData.value = mUserName
+//        mCameraViewModel.saveUserName(mUserName)
     }
 }

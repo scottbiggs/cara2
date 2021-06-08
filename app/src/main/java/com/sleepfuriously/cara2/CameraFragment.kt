@@ -8,23 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
-import android.net.Uri
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import java.util.concurrent.Executors
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.fragment.app.viewModels
+import androidx.camera.view.PreviewView
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.fragment_camera_layout.*
+//import kotlinx.android.synthetic.main.fragment_camera_layout.*
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 import java.util.concurrent.ExecutorService
 
 
@@ -82,9 +78,12 @@ class CameraFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private lateinit var mViewModel : CameraViewModel
+    private lateinit var mCameraViewModel : CameraViewModel
 
     lateinit var mNavController : NavController
+
+    /** Will display the viewfinder for taking pictures */
+    private lateinit var mViewFinder : PreviewView
 
     //
     //  camera stuff
@@ -133,19 +132,27 @@ class CameraFragment : Fragment() {
         requireActivity().title = getString(R.string.camera_frag_title)
 
         // get a copy of the CameraViewModel
-        mViewModel = ViewModelProvider(requireActivity()).get(CameraViewModel::class.java)
+        mCameraViewModel = ViewModelProvider(requireActivity()).get(CameraViewModel::class.java)
 
         // get the camera view going
         startCamera()
 
         // Set up the listener for take photo button
-        camera_capture_button.setOnClickListener {
+        val cameraButt = v.findViewById<Button>(R.id.camera_capture_button)
+        cameraButt.setOnClickListener {
             takePhoto()
         }
 
         outputDirectory = getOutputDirectory()
 
         cameraExecutor = Executors.newSingleThreadExecutor()
+
+        mViewFinder = v.findViewById(R.id.viewFinder)
+
+        Toast.makeText(requireContext(), "username = " + mCameraViewModel.mNameLiveData.value.toString(), Toast.LENGTH_SHORT).show()
+//        Toast.makeText(requireContext(), "username = ${mCameraViewModel.getUserName()}", Toast.LENGTH_SHORT).show()
+        Log.d(TAG, "onViewCreated(), viewmodel username = ${mCameraViewModel.mNameLiveData.value.toString()}")
+//        Log.d(TAG, "onViewCreated(), viewmodel username = ${mCameraViewModel.getUserName()}")
     }
 
 
@@ -198,7 +205,7 @@ class CameraFragment : Fragment() {
                                          Log.v(TAG, "image successfully captured")
 
                                          // pass the image along to the view model
-                                         mViewModel.mImageProxyLiveData.value = image
+                                         mCameraViewModel.mImageProxyLiveData.value = image
 
                                          // and take us to the next fragment
                                          findNavController().navigate(R.id.action_cameraFragment_to_pictureTakenFragment)
@@ -265,7 +272,7 @@ class CameraFragment : Fragment() {
             val preview = Preview.Builder()
                 .build()
                 .also {
-                    it.setSurfaceProvider(viewFinder.surfaceProvider)
+                    it.setSurfaceProvider(mViewFinder.surfaceProvider)
                 }
 
             // prepare the place to hold the photo
