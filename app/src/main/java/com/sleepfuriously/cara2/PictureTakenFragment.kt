@@ -16,7 +16,6 @@ import androidx.lifecycle.ViewModelProvider
 import java.nio.ByteBuffer
 
 
-
 /**
  * Fragment that lands immediately after the user takes a picture.
  *
@@ -31,6 +30,9 @@ class PictureTakenFragment : Fragment() {
 
     private val TAG = "PictureTakenFragment"
 
+    /** max size any dimension of the bitmap can take */
+    private val MAX_BITMAP_SIZE = 800
+
     //-------------------------------
     //  data
     //-------------------------------
@@ -39,6 +41,7 @@ class PictureTakenFragment : Fragment() {
 
     private lateinit var mImageProxy : ImageProxy
 
+    private lateinit var mBitmap : Bitmap
 
     //-------------------------------
     //  widgets
@@ -58,6 +61,26 @@ class PictureTakenFragment : Fragment() {
     //  functions
     //-------------------------------
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // setup the viewmodel
+        mCameraViewModel = ViewModelProvider(requireActivity()).get(CameraViewModel::class.java)
+
+        // setup the bitmap
+        mImageProxy = mCameraViewModel.mImageProxyLiveData.value!!
+
+        // And put that image into the imageview
+        mBitmap = convertImageProxyToBitmap(mImageProxy)
+
+        // while we're at it, scale the image down to a reasonable size
+        val scale = findBitMapScale(mBitmap, MAX_BITMAP_SIZE)
+        if (scale < 1) {
+            // only bother if we need to scale down.  Why make the image bigger?
+            mBitmap = scaleBitMap(mBitmap, scale)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -71,19 +94,12 @@ class PictureTakenFragment : Fragment() {
 
         requireActivity().title = getString(R.string.picture_taken_frag_title)
 
-        mCameraViewModel = ViewModelProvider(requireActivity()).get(CameraViewModel::class.java)
-
         // set username textview
 //        val nameTv = view.findViewById<TextView>(R.id.username_tv)
 //        nameTv.text = mCameraViewModel.mNameLiveData.value.toString()
 
-        // set image
-        mImageProxy = mCameraViewModel.mImageProxyLiveData.value!!
         mPhotoIv = view.findViewById(R.id.pic_iv)
-
-        // And put that image into the imageview
-        val bitmap = convertImageProxyToBitmap(mImageProxy)
-        mPhotoIv.setImageBitmap(bitmap)
+        mPhotoIv.setImageBitmap(mBitmap)
         mPhotoIv.rotation = getRotation(mImageProxy)
 
         mDescEt = view.findViewById(R.id.photo_desc_et)
@@ -115,6 +131,36 @@ class PictureTakenFragment : Fragment() {
 
 
     /**
+     * Finds the amount to scale the given bitmap so that it's maximum dimension
+     * fits within the given max value.
+     */
+    private fun findBitMapScale(origBmp: Bitmap, maxDimen : Int) : Float {
+        if (origBmp.width > origBmp.height) {
+            return maxDimen.toFloat() / origBmp.width.toFloat()
+        }
+        else {
+            return maxDimen.toFloat() / origBmp.height.toFloat()
+        }
+    }
+
+
+    /**
+     * Scales the given bitmap by the given amount.
+     *
+     * @param   origBmp     The original bitmap. will be unchanged.
+     *
+     * @param   scale       The number to scale the bitmap by.  1 will make it unchanged.
+     */
+    private fun scaleBitMap(origBmp : Bitmap, scale : Float) : Bitmap {
+        Log.d(TAG, "scaling bitmap by $scale amount")
+
+        // find the dimensions and multiply the scale
+        val width = (origBmp.width * scale).toInt()
+        val height = (origBmp.height * scale).toInt()
+        return Bitmap.createScaledBitmap(origBmp, width, height, false)
+    }
+
+    /**
      * Sends all our collected data to wherever it needs to go.
      * Right now the data is:
      *      username
@@ -123,7 +169,8 @@ class PictureTakenFragment : Fragment() {
      *      gps todo
      */
     private fun sendAllData() {
-
+        // todo
     }
+
 
 }
