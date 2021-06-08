@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/fragment_vertical_margin"
     android:paddingRight="@dimen/fragment_horizontal_margin"
     android:paddingBottom="@dimen/fragment_vertical_margin"
-    tools:context=".login.LoginFragment">
+    tools:context=".LoginFragment">
 
     <EditText
         android:id="@+id/username_et"
@@ -24,7 +24,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:importantForAutofill="no" />
+        android:importantForAutofill="no"
+        >
+        <requestFocus />
+    </EditText>
 
     <EditText
         android:id="@+id/password_et"

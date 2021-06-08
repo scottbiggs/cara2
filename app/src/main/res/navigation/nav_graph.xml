@@ -8,7 +8,7 @@
     <!-- Login Fragment -->
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.sleepfuriously.cara2.login.LoginFragment"
+        android:name="com.sleepfuriously.cara2.LoginFragment"
         android:label="fragment_login_layout"
         tools:layout="@layout/fragment_login_layout" >
         <action

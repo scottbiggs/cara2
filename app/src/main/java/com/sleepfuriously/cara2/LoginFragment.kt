@@ -1,5 +1,7 @@
-package com.sleepfuriously.cara2.login
+package com.sleepfuriously.cara2
 
+import android.app.Activity
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import androidx.fragment.app.Fragment
 import android.os.Bundle
@@ -7,16 +9,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
-import com.sleepfuriously.cara2.CameraViewModel
-import com.sleepfuriously.cara2.MainActivity
 import com.sleepfuriously.cara2.databinding.FragmentLoginLayoutBinding
-
-import com.sleepfuriously.cara2.R
 
 class LoginFragment : Fragment() {
 
@@ -52,8 +51,8 @@ class LoginFragment : Fragment() {
     //  widgets
     //---------------------
 
-    private lateinit var mPassEt : EditText
     private lateinit var mUserNameEt : EditText
+    private lateinit var mPassEt : EditText
 
     private lateinit var mLoginButt : Button
 
@@ -73,8 +72,8 @@ class LoginFragment : Fragment() {
     }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(v: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(v, savedInstanceState)
         Log.v(TAG, "onViewCreated()")
 
 //        loginViewModel = ViewModelProvider(requireActivity(), LoginViewModelFactory())
@@ -84,12 +83,17 @@ class LoginFragment : Fragment() {
 
         requireActivity().title = getString(R.string.login_frag_title)
 
+        (requireActivity() as MainActivity).setupCameraPermissions()
+
+        // bind the widgets
         mUserNameEt = binding.usernameEt
         mPassEt = binding.passwordEt
         mLoginButt = binding.login
         mProgressBar = binding.loading
 
-        (requireActivity() as MainActivity).setupCameraPermissions()
+        //
+        //  listeners
+        //
 
         mLoginButt.setOnClickListener {
             if (goodLoginEntries()) {
@@ -242,4 +246,5 @@ class LoginFragment : Fragment() {
     private fun saveDataToViewModel() {
         mCameraViewModel.mNameLiveData.value = mUserName
     }
+
 }
