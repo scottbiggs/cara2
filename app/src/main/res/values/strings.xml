@@ -23,6 +23,8 @@
 
     <!-- LoginFragment -->
     <string name="login_frag_title">Login</string>
+    <string name="login_frag_unable_to_login">Unable to log in</string>
+    <string name="login_frag_fill_in_forms">Please fill in the forms</string>
 
     <!-- CameraFragment -->
     <string name="camera_frag_title">Take Photo</string>
