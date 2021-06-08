@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import androidx.camera.core.ImageProxy
 import androidx.fragment.app.Fragment
@@ -37,7 +39,20 @@ class PictureTakenFragment : Fragment() {
 
     private lateinit var mImageProxy : ImageProxy
 
+
+    //-------------------------------
+    //  widgets
+    //-------------------------------
+
+    /** displays the picture */
     private lateinit var mPhotoIv : ImageView
+
+    /** holds the user's description of the picture */
+    private lateinit var mDescEt : EditText
+
+    /** button to send this info */
+    private lateinit var mSendButt : Button
+
 
     //-------------------------------
     //  functions
@@ -70,6 +85,13 @@ class PictureTakenFragment : Fragment() {
         val bitmap = convertImageProxyToBitmap(mImageProxy)
         mPhotoIv.setImageBitmap(bitmap)
         mPhotoIv.rotation = getRotation(mImageProxy)
+
+        mDescEt = view.findViewById(R.id.photo_desc_et)
+
+        mSendButt = view.findViewById(R.id.send_butt)
+        mSendButt.setOnClickListener {
+            sendAllData()
+        }
     }
 
 
@@ -91,5 +113,17 @@ class PictureTakenFragment : Fragment() {
         return imageProxy.imageInfo.rotationDegrees.toFloat()
     }
 
+
+    /**
+     * Sends all our collected data to wherever it needs to go.
+     * Right now the data is:
+     *      username
+     *      picture data
+     *      message for picture
+     *      gps todo
+     */
+    private fun sendAllData() {
+
+    }
 
 }

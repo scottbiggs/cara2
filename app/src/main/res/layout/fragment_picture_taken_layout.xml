@@ -22,7 +22,7 @@
         tools:src="@tools:sample/avatars" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/send_butt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
@@ -33,7 +33,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/photo_desc_et"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
