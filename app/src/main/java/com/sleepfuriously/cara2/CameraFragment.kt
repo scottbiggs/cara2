@@ -19,7 +19,6 @@ import androidx.camera.view.PreviewView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-//import kotlinx.android.synthetic.main.fragment_camera_layout.*
 import java.io.File
 import java.util.concurrent.ExecutorService
 

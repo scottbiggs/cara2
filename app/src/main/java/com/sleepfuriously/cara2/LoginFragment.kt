@@ -1,7 +1,5 @@
 package com.sleepfuriously.cara2
 
-import android.app.Activity
-import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import androidx.fragment.app.Fragment
 import android.os.Bundle
@@ -9,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
@@ -32,7 +29,6 @@ class LoginFragment : Fragment() {
     //  data
     //---------------------
 
-//    private lateinit var loginViewModel: LoginViewModel
     private var _binding: FragmentLoginLayoutBinding? = null
 
     /** name of the user as they typed it in */
@@ -76,9 +72,6 @@ class LoginFragment : Fragment() {
         super.onViewCreated(v, savedInstanceState)
         Log.v(TAG, "onViewCreated()")
 
-//        loginViewModel = ViewModelProvider(requireActivity(), LoginViewModelFactory())
-//            .get(LoginViewModel::class.java)
-//
         mCameraViewModel = ViewModelProvider(requireActivity()).get((CameraViewModel::class.java))
 
         requireActivity().title = getString(R.string.login_frag_title)
@@ -122,48 +115,6 @@ class LoginFragment : Fragment() {
             }
         }
 
-//        loginViewModel.loginFormState.observe(viewLifecycleOwner,
-//            Observer { loginFormState ->
-//                if (loginFormState == null) {
-//                    return@Observer
-//                }
-//                loginButton.isEnabled = loginFormState.isDataValid
-//                loginFormState.usernameError?.let {
-//                    usernameEditText.error = getString(it)
-//                }
-//                loginFormState.passwordError?.let {
-//                    passwordEditText.error = getString(it)
-//                }
-//            })
-//
-//        loginViewModel.loginResult.observe(viewLifecycleOwner,
-//            Observer { loginResult ->
-//                loginResult ?: return@Observer
-//                loadingProgressBar.visibility = View.GONE
-//                loginResult.error?.let {
-//                    showLoginFailed(it)
-//                }
-//
-//                loginResult.success?.let {
-//                    // Successful login, yay!
-//                    updateUiWithUser(it)
-//                    saveDataToViewModel()
-//
-//                    Log.d(TAG, "about to go to Camera Fragment. view model username = ${mCameraViewModel.mNameLiveData.value.toString()}")
-//
-//                    // add some data to the navigation system
-//                    findNavController().navigate(R.id.action_loginFragment_to_cameraFragment)
-//                }
-//            })
-
-//        loginButton.setOnClickListener {
-//            mUserName = usernameEditText.text.toString()
-//            loginViewModel.login(
-//                mUserName,
-//                passwordEditText.text.toString()
-//            )
-//        }
-
     } // onViewCreated()
 
 
@@ -178,9 +129,10 @@ class LoginFragment : Fragment() {
 
     /**
      * Returns TRUE iff all the login forms have at least something to check.
+     * Password is optional currently.
      */
     private fun goodLoginEntries() : Boolean {
-        if (mUserNameEt.text.isNotEmpty() && mPassEt.text.isNotEmpty()) {
+        if (mUserNameEt.text.isNotEmpty()) {
             return true
         }
         return false
@@ -201,7 +153,6 @@ class LoginFragment : Fragment() {
      * side effects:
      *  mUserName
      *  mPassword
-     *
      */
     private fun getDataFromUi() {
         mUserName = mUserNameEt.text.toString()
@@ -233,11 +184,6 @@ class LoginFragment : Fragment() {
     private fun userAlert(str : String) {
         Toast.makeText(requireContext(), str, Toast.LENGTH_LONG).show()
     }
-
-//    private fun showLoginFailed(@StringRes errorString: Int) {
-//        val appContext = context?.applicationContext ?: return
-//        Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
-//    }
 
 
     /**
