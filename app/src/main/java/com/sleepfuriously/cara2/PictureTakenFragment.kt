@@ -1,16 +1,13 @@
 package com.sleepfuriously.cara2
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.media.ExifInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.camera.core.ImageProxy
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -38,7 +35,9 @@ class PictureTakenFragment : Fragment() {
 
     private lateinit var mCameraViewModel : CameraViewModel
 
-    private lateinit var mImageProxy: ImageProxy
+    private lateinit var mImageProxy : ImageProxy
+
+    private lateinit var mPhotoIv : ImageView
 
     //-------------------------------
     //  functions
@@ -65,11 +64,12 @@ class PictureTakenFragment : Fragment() {
 
         // set image
         mImageProxy = mCameraViewModel.mImageProxyLiveData.value!!
+        mPhotoIv = view.findViewById(R.id.pic_iv)
+
         // And put that image into the imageview
-        val photoIv = view.findViewById<ImageView>(R.id.pic_iv)
         val bitmap = convertImageProxyToBitmap(mImageProxy)
-        photoIv.setImageBitmap(bitmap)
-        photoIv.rotation = getRotation(mImageProxy)
+        mPhotoIv.setImageBitmap(bitmap)
+        mPhotoIv.rotation = getRotation(mImageProxy)
     }
 
 
@@ -91,26 +91,5 @@ class PictureTakenFragment : Fragment() {
         return imageProxy.imageInfo.rotationDegrees.toFloat()
     }
 
-
-
-//    companion object {
-//        /**
-//         * Use this factory method to create a new instance of
-//         * this fragment using the provided parameters.
-//         *
-//         * @param param1 Parameter 1.
-//         * @param param2 Parameter 2.
-//         * @return A new instance of fragment PictureTakenFragment.
-//         */
-//        // TODO: Rename and change types and number of parameters
-//        @JvmStatic
-//        fun newInstance(param1: String, param2: String) =
-//            PictureTakenFragment().apply {
-//                arguments = Bundle().apply {
-//                    putString(ARG_PARAM1, param1)
-//                    putString(ARG_PARAM2, param2)
-//                }
-//            }
-//    }
 
 }
