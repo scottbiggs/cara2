@@ -36,6 +36,9 @@
     <string name="picture_taken_frag_image_desc">photo that was just taken</string>
     <!-- The prefix that precedes the actual message -->
     <string name="picture_taken_email_msg_prefix">caption for photo:\n</string>
+    <!-- Prefix that immediately precedes the name of the sender -->
+    <string name="picture_taken_email_name_prefix">from:\t</string>
+    <string name="picture_taken_email_no_name">noname</string>
     <!-- String presented when the user does not supply a message -->
     <string name="picture_taken_email_no_msg">No message supplied</string>
     <string name="picture_taken_unable_to_send_email">Unable to send email!</string>

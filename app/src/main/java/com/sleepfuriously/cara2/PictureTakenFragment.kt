@@ -17,7 +17,6 @@ import android.widget.Toast
 import androidx.camera.core.ImageProxy
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import java.nio.ByteBuffer
 
@@ -45,8 +44,8 @@ class PictureTakenFragment : Fragment() {
     /** data type for the email Intent */
     private val EMAIL_TYPE = "text/plain"
 
-    /** recipient of the emails */
-    private val EMAIL_RECIPIENT = "scottmorganbiggs@gmail.com"
+    /** recipients of the emails */
+    private val EMAIL_RECIPIENTS : Array<String> = arrayOf("scottmorganbiggs@gmail.com")
 
     /** subject of the emails */
     private val EMAIL_SUBJECT = "photo-msg for cara"
@@ -124,6 +123,8 @@ class PictureTakenFragment : Fragment() {
 
         mSendButt = view.findViewById(R.id.send_butt)
         mSendButt.setOnClickListener {
+            // message data
+            mCameraViewModel.mMsgLiveData.value = mDescEt.text.toString()
             sendAllData()
         }
     }
@@ -214,14 +215,18 @@ class PictureTakenFragment : Fragment() {
      */
     private fun launchEmail() {
 
-        val emailIntent = Intent(Intent.ACTION_SEND)
-        emailIntent.setDataAndType(Uri.parse(EMAIL_DATA), EMAIL_TYPE)
+        val emailIntent = Intent(Intent.ACTION_SENDTO)
+        emailIntent.data = Uri.parse(EMAIL_DATA)
 
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, EMAIL_RECIPIENT)
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, EMAIL_RECIPIENTS)
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, EMAIL_SUBJECT)
 
         // compose the message
-        val msg = getString(R.string.picture_taken_email_msg_prefix) +
+        val msg =
+                getString(R.string.picture_taken_email_name_prefix) +
+                (mCameraViewModel.mNameLiveData.value ?: getString(R.string.picture_taken_email_no_name)) +
+                "\n\n" +
+                getString(R.string.picture_taken_email_msg_prefix) +
                 (mCameraViewModel.mMsgLiveData.value ?: getString(R.string.picture_taken_email_no_msg))
         emailIntent.putExtra(Intent.EXTRA_TEXT, msg)
 
