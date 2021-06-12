@@ -1,7 +1,10 @@
 package com.sleepfuriously.cara2
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,9 +13,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.camera.core.ImageProxy
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import java.nio.ByteBuffer
 
 
@@ -32,6 +38,18 @@ class PictureTakenFragment : Fragment() {
 
     /** max size any dimension of the bitmap can take */
     private val MAX_BITMAP_SIZE = 800
+
+    /** the uri to send our mail to.  Right now it's my email address */
+    private val EMAIL_DATA = "mailto:"
+
+    /** data type for the email Intent */
+    private val EMAIL_TYPE = "text/plain"
+
+    /** recipient of the emails */
+    private val EMAIL_RECIPIENT = "scottmorganbiggs@gmail.com"
+
+    /** subject of the emails */
+    private val EMAIL_SUBJECT = "photo-msg for cara"
 
     //-------------------------------
     //  data
@@ -169,8 +187,56 @@ class PictureTakenFragment : Fragment() {
      *      gps todo
      */
     private fun sendAllData() {
+
+        // part 1, save the user's name as a file
+
+        // part 2, save the accompanying message as a file
+        //  (files can be saved using the Storage Access Framework)
         // todo
+
+        // part 3, save the bitmap as a file.  This way the mail program will know how to find it.
+        //  (try using MediaStore api)
+        // todo
+
+        // part 4, save the gps as a file.
+        // todo
+
+        // part 5, tell a mail program to send off this data
+        launchEmail()
     }
 
+
+    /**
+     * Use an Intent to launch am email action
+     *
+     * code taken from:
+     *      https://www.tutorialspoint.com/android/android_sending_email.htm
+     */
+    private fun launchEmail() {
+
+        val emailIntent = Intent(Intent.ACTION_SEND)
+        emailIntent.setDataAndType(Uri.parse(EMAIL_DATA), EMAIL_TYPE)
+
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, EMAIL_RECIPIENT)
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, EMAIL_SUBJECT)
+
+        // compose the message
+        val msg = getString(R.string.picture_taken_email_msg_prefix) +
+                (mCameraViewModel.mMsgLiveData.value ?: getString(R.string.picture_taken_email_no_msg))
+        emailIntent.putExtra(Intent.EXTRA_TEXT, msg)
+
+        try {
+            // todo: find a way to know when the email has been sent and then go back to the CameraFragment
+            //  right now, I'm just going back to the picture automatically--potentially losing some data.
+            startActivity(Intent.createChooser(emailIntent, "sending..."))
+            findNavController().navigate(R.id.action_pictureTakenFragment_to_cameraFragment)
+        }
+        catch (e: ActivityNotFoundException) {
+            Log.e(TAG, "Unable to send email--but why? Try reading the following:")
+            e.printStackTrace()
+            Toast.makeText(requireActivity(), getString(R.string.picture_taken_unable_to_send_email), Toast.LENGTH_LONG)
+                .show()
+        }
+    }
 
 }

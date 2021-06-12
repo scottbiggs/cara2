@@ -34,6 +34,11 @@
     <string name="picture_taken_frag_send_button">Send</string>
     <string name="picture_taken_frag_hint">description</string>
     <string name="picture_taken_frag_image_desc">photo that was just taken</string>
+    <!-- The prefix that precedes the actual message -->
+    <string name="picture_taken_email_msg_prefix">caption for photo:\n</string>
+    <!-- String presented when the user does not supply a message -->
+    <string name="picture_taken_email_no_msg">No message supplied</string>
+    <string name="picture_taken_unable_to_send_email">Unable to send email!</string>
 
     <!-- SendDataFragment -->
     <string name="send_data_frag_title">Send Photo</string>
