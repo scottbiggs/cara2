@@ -42,6 +42,8 @@
     <!-- String presented when the user does not supply a message -->
     <string name="picture_taken_email_no_msg">No message supplied</string>
     <string name="picture_taken_unable_to_send_email">Unable to send email!</string>
+    <!-- unable to write file for the photograph (part of the sending process) -->
+    <string name="picture_taken_unable_to_save_image">Unable to save photo—cannot send!</string>
 
     <!-- SendDataFragment -->
     <string name="send_data_frag_title">Send Photo</string>
