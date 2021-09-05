@@ -9,6 +9,17 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
+/**
+ * MainActivity for Cara's project.
+ *
+ * The project allows the user to:
+ *  1. login
+ *  2. take a picture
+ *  3. record a description of the picture
+ *  4. send the picture, description, and geolocation to a
+ *     restful endpoint
+ *  5. Repeat as desired
+ */
 class MainActivity : AppCompatActivity() {
 
     //------------------------

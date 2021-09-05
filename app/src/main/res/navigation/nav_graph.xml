@@ -25,10 +25,6 @@
         <action
             android:id="@+id/action_cameraFragment_to_pictureTakenFragment"
             app:destination="@id/pictureTakenFragment" />
-<!--        <argument-->
-<!--            android:name="userName"-->
-<!--            app:argType="string"-->
-<!--            android:defaultValue='"cara is sweet"' />-->
     </fragment>
 
     <!-- After Picture was Taken Fragment -->
