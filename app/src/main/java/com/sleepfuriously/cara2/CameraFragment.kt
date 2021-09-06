@@ -127,7 +127,7 @@ class CameraFragment : Fragment() {
         Log.v(TAG, "onViewCreated()")
 
         // set the title
-        requireActivity().title = getString(R.string.camera_frag_title)
+        requireActivity().title = getString(R.string.app_name)
 
         // get a copy of the CameraViewModel
         mCameraViewModel = ViewModelProvider(requireActivity()).get(CameraViewModel::class.java)

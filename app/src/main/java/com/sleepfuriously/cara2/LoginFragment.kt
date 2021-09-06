@@ -74,7 +74,7 @@ class LoginFragment : Fragment() {
 
         mCameraViewModel = ViewModelProvider(requireActivity()).get((CameraViewModel::class.java))
 
-        requireActivity().title = getString(R.string.login_frag_title)
+//        requireActivity().title = getString(R.string.login_frag_title)
 
         (requireActivity() as MainActivity).setupCameraPermissions()
 
