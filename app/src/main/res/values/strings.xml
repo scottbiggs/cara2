@@ -47,5 +47,6 @@
 
     <!-- SendDataFragment -->
     <string name="send_data_frag_title">Send Photo</string>
+    <string name="retake_picture">re-take</string>
 
 </resources>

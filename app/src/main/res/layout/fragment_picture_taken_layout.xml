@@ -10,40 +10,65 @@
     <ImageView
         android:id="@+id/pic_iv"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:contentDescription="@string/picture_taken_frag_image_desc"
+        android:layout_height="0dp"
         android:adjustViewBounds="true"
+        android:contentDescription="@string/picture_taken_frag_image_desc"
         android:scaleType="centerInside"
+        app:layout_constraintBottom_toTopOf="@+id/halfway_guide"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         tools:src="@tools:sample/avatars" />
 
     <Button
         android:id="@+id/send_butt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
         android:text="@string/picture_taken_frag_send_button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/photo_butt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/photo_butt" />
 
     <EditText
         android:id="@+id/photo_desc_et"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:hint="@string/picture_taken_frag_hint"
         android:importantForAutofill="no"
         android:inputType="text|textMultiLine"
+        android:maxLines="4"
+        android:isScrollContainer="true"
         android:scrollHorizontally="false"
         app:layout_constraintEnd_toEndOf="@+id/pic_iv"
         app:layout_constraintStart_toStartOf="@+id/pic_iv"
-        app:layout_constraintTop_toBottomOf="@+id/pic_iv" />
+        app:layout_constraintTop_toTopOf="@+id/halfway_guide">
+
+        <requestFocus />
+    </EditText>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/halfway_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.62" />
+
+    <Button
+        android:id="@+id/photo_butt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/retake_picture"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/send_butt"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/photo_desc_et"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.sleepfuriously.cara2
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -10,6 +11,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -116,6 +119,12 @@ class PictureTakenFragment : Fragment() {
             mCameraViewModel.mMsgLiveData.value = mDescEt.text.toString()
             sendAllData()
         }
+
+        // open soft keyboard
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//        mDescEt.requestFocus()  // redundant--already has focus in layout file
+        imm.showSoftInput(mDescEt, InputMethodManager.SHOW_IMPLICIT)
+
     }
 
 
