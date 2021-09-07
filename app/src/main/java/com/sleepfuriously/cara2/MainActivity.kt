@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+
 
 /**
  * MainActivity for Cara's project.
@@ -42,6 +44,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Log.v(TAG, "onCreate()")
+
+        // uncomment this for a functional toobar (title bar, action bar, whatever)
+//        val toolbar : Toolbar = findViewById(R.id.main_toolbar)
+//        setSupportActionBar(toolbar)
 
     }
 
