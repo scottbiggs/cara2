@@ -65,6 +65,8 @@ class PictureTakenFragment : Fragment() {
     /** button to send this info */
     private lateinit var mSendButt : Button
 
+    /** sends the user back to take another photo */
+    private lateinit var mRetakeButt : Button
 
     //-------------------------------
     //  functions
@@ -118,6 +120,11 @@ class PictureTakenFragment : Fragment() {
             // message data
             mCameraViewModel.mMsgLiveData.value = mDescEt.text.toString()
             sendAllData()
+        }
+
+        mRetakeButt = view.findViewById(R.id.photo_butt)
+        mRetakeButt.setOnClickListener {
+            findNavController().navigate(R.id.action_pictureTakenFragment_to_cameraFragment)
         }
 
         // open soft keyboard
