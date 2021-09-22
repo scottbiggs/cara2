@@ -1,6 +1,7 @@
 package com.sleepfuriously.cara2
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -61,7 +62,33 @@ class SendDataFragment : Fragment() {
 //        findNavController().navigate(R.id.action_sendDataFragment_to_pictureTakenFragment)
     }
 
+
+    private fun uploadVersion2() {
+        // call to upload this image
+        Log.d(TAG, "attempting multi-part upload...")
+        val multiPartUpload = MultipartWebservice(this)
+        multiPartUpload.sendMultipartRequest(
+            Request.Method.POST,
+            TOILET_URL,
+            getImageData(800).toByteArray(),       // this is the data that should be sent!
+            "foo.tmp",
+            { response ->
+                // todo implement response listener
+                Log.d(TAG, "response -> ${response.data}")
+            },
+            { error ->
+                // todo implement error listener
+                Log.e(TAG, "error -> $error")
+            }
+        )
+    }
+
+
+
     companion object {
+
+        const val TAG = "SendDataFragment"
+
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
