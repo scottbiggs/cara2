@@ -1,22 +1,17 @@
 package com.sleepfuriously.cara2
 
-import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.camera.core.ImageProxy
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -100,8 +95,8 @@ class PictureTakenFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_picture_taken_layout, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(v: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(v, savedInstanceState)
 
         requireActivity().title = getString(R.string.picture_taken_frag_title)
 
@@ -109,20 +104,20 @@ class PictureTakenFragment : Fragment() {
 //        val nameTv = view.findViewById<TextView>(R.id.username_tv)
 //        nameTv.text = mCameraViewModel.mNameLiveData.value.toString()
 
-        mPhotoIv = view.findViewById(R.id.pic_iv)
+        mPhotoIv = v.findViewById(R.id.pic_iv)
         mPhotoIv.setImageBitmap(mBitmap)
         mPhotoIv.rotation = getRotation(mImageProxy)
 
-        mDescEt = view.findViewById(R.id.photo_desc_et)
+        mDescEt = v.findViewById(R.id.photo_desc_et)
 
-        mSendButt = view.findViewById(R.id.send_butt)
+        mSendButt = v.findViewById(R.id.send_butt)
         mSendButt.setOnClickListener {
             // message data
             mCameraViewModel.mMsgLiveData.value = mDescEt.text.toString()
-            sendAllData()
+            findNavController().navigate(R.id.action_pictureTakenFragment_to_sendDataFragment)
         }
 
-        mRetakeButt = view.findViewById(R.id.photo_butt)
+        mRetakeButt = v.findViewById(R.id.photo_butt)
         mRetakeButt.setOnClickListener {
             findNavController().navigate(R.id.action_pictureTakenFragment_to_cameraFragment)
         }
@@ -183,20 +178,6 @@ class PictureTakenFragment : Fragment() {
         val height = (origBmp.height * scale).toInt()
         return Bitmap.createScaledBitmap(origBmp, width, height, false)
     }
-
-    /**
-     * Sends all our collected data to wherever it needs to go.
-     * Right now the data is:
-     *      username
-     *      gps todo
-     *      message for picture
-     *      picture data
-     */
-    private fun sendAllData() {
-        // todo
-        Toast.makeText(requireContext(), "need implement sendAllData()", Toast.LENGTH_SHORT).show()
-    }
-
 
 
 }

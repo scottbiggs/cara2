@@ -48,7 +48,7 @@
         android:label="fragment_send_data_layout"
         tools:layout="@layout/fragment_send_data_layout" >
         <action
-            android:id="@+id/action_sendDataFragment_to_cameraFragment"
-            app:destination="@id/cameraFragment" />
+            android:id="@+id/action_sendDataFragment_to_pictureTakenFragment"
+            app:destination="@id/pictureTakenFragment" />
     </fragment>
 </navigation>

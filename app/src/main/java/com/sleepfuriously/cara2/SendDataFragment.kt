@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.navigation.fragment.findNavController
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,9 +39,26 @@ class SendDataFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_send_data_layout, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(v: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(v, savedInstanceState)
         requireActivity().title = getString(R.string.camera_frag_title)
+
+        val cancelButt : Button = v.findViewById(R.id.cancel_send_butt)
+        cancelButt.setOnClickListener {
+            cancelSendImage()
+        }
+    }
+
+
+    /**
+     * Cancels a send in progress.  Returns the user to [PictureTakenFragment].
+     */
+    private fun cancelSendImage() {
+        // todo: cancel the send
+
+        // navigate to previous fragment
+        findNavController().navigateUp()    // don't have to fuck with the stack this way
+//        findNavController().navigate(R.id.action_sendDataFragment_to_pictureTakenFragment)
     }
 
     companion object {
