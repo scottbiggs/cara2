@@ -3,7 +3,9 @@ package com.sleepfuriously.cara2
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +18,7 @@ import androidx.camera.core.ImageProxy
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
 
 
@@ -112,8 +115,11 @@ class PictureTakenFragment : Fragment() {
 
         mSendButt = v.findViewById(R.id.send_butt)
         mSendButt.setOnClickListener {
-            // message data
+            // save some data to the view model
             mCameraViewModel.mMsgLiveData.value = mDescEt.text.toString()
+            mCameraViewModel.mCurrentImageEncoded = getImageData(mPhotoIv, 800) // todo: remove the char limit
+
+            // and switch to the next Fragment
             findNavController().navigate(R.id.action_pictureTakenFragment_to_sendDataFragment)
         }
 
@@ -177,6 +183,36 @@ class PictureTakenFragment : Fragment() {
         val width = (origBmp.width * scale).toInt()
         val height = (origBmp.height * scale).toInt()
         return Bitmap.createScaledBitmap(origBmp, width, height, false)
+    }
+
+
+    /**
+     * Grabs the image data from the current imageView and returns it as a Base64 String.
+     *
+     * @param   imageView   The ImageView that is currently displaying an image.
+     *
+     * @param   charLimit   The max number of chars to return.  Data will be truncated.
+     *                      0 means no limit (default).
+     *
+     * @return  The image data converted to Base64 encoded String.
+     */
+    private fun getImageData(imageView: ImageView, charLimit : Int = 0) : String {
+
+        val drawable = imageView.drawable as BitmapDrawable
+        val bitmap = drawable.bitmap
+
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+
+        // fixme: this needs to be in another thread as it takes a while
+        var base64encoded : String = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
+
+        // truncate
+        if ((charLimit != 0) && (base64encoded.length > charLimit)) {
+            base64encoded = base64encoded.subSequence(0, charLimit - 1) as String
+        }
+
+        return base64encoded
     }
 
 

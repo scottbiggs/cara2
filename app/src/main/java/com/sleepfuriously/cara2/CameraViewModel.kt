@@ -33,6 +33,9 @@ class CameraViewModel : ViewModel() {
     /** livedata accessor to user gps coords */
     val mGpsLiveData = MutableLiveData<String>()
 
+    /** A String version of the latest photo that was taken */
+    var mCurrentImageEncoded : String = ""
+
 
     //-----------------
     //  public functions

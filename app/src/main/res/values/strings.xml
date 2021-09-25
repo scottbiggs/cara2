@@ -50,5 +50,6 @@
     <string name="retake_picture">re-take</string>
     <string name="sending_picture_data">Sending image…</string>
     <string name="cancel_send_image">Cancel</string>
+    <string name="successful_send">Image successfully sent, thank you!</string>
 
 </resources>

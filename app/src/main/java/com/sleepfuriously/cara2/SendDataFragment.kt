@@ -7,12 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.android.volley.Request
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
+
+
+/** you can view this toilet at https://ptsv2.com/t/9k0vk-1623901532 */
+const val TOILET_URL = "https://ptsv2.com/t/9k0vk-1623901532/post"
 
 /**
  * A simple [Fragment] subclass.
@@ -20,9 +27,22 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class SendDataFragment : Fragment() {
+
+    //-----------------------------
+    //  data
+    //-----------------------------
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    /** reference to the view model */
+    private lateinit var mCameraViewModel : CameraViewModel
+
+
+    //-----------------------------
+    //  functions
+    //-----------------------------
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +56,11 @@ class SendDataFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        // get reference to viewmodel
+        mCameraViewModel = ViewModelProvider(requireActivity()).get(CameraViewModel::class.java)
+
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_send_data_layout, container, false)
     }
@@ -48,6 +73,9 @@ class SendDataFragment : Fragment() {
         cancelButt.setOnClickListener {
             cancelSendImage()
         }
+
+        // start the send process immediately (that's why we're here!)
+        uploadVersion2()
     }
 
 
@@ -55,26 +83,26 @@ class SendDataFragment : Fragment() {
      * Cancels a send in progress.  Returns the user to [PictureTakenFragment].
      */
     private fun cancelSendImage() {
-        // todo: cancel the send
+        // todo: cancel the send !!!!!
 
         // navigate to previous fragment
         findNavController().navigateUp()    // don't have to fuck with the stack this way
-//        findNavController().navigate(R.id.action_sendDataFragment_to_pictureTakenFragment)
     }
 
 
     private fun uploadVersion2() {
         // call to upload this image
         Log.d(TAG, "attempting multi-part upload...")
-        val multiPartUpload = MultipartWebservice(this)
+        val multiPartUpload = MultipartWebservice(requireContext())
         multiPartUpload.sendMultipartRequest(
             Request.Method.POST,
             TOILET_URL,
-            getImageData(800).toByteArray(),       // this is the data that should be sent!
+            mCameraViewModel.mCurrentImageEncoded.toByteArray(),    // fixme: redudant--should convert the image to ByteArray first thing
             "foo.tmp",
             { response ->
-                // todo implement response listener
-                Log.d(TAG, "response -> ${response.data}")
+                Log.d(TAG, "Success!  response -> ${response.data}")
+                Toast.makeText(requireContext(), R.string.successful_send, Toast.LENGTH_LONG).show()
+                findNavController().navigateUp()    // return
             },
             { error ->
                 // todo implement error listener
