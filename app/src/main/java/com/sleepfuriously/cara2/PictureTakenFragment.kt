@@ -128,10 +128,9 @@ class PictureTakenFragment : Fragment() {
             findNavController().navigate(R.id.action_pictureTakenFragment_to_cameraFragment)
         }
 
-        // open soft keyboard
-        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//        mDescEt.requestFocus()  // redundant--already has focus in layout file
-        imm.showSoftInput(mDescEt, InputMethodManager.SHOW_IMPLICIT)
+        // open soft keyboard  (nah, kind of gets in the way at first)
+//        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//        imm.showSoftInput(mDescEt, InputMethodManager.SHOW_IMPLICIT)
 
     }
 
