@@ -1,6 +1,5 @@
 package com.sleepfuriously.cara2
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -10,7 +9,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -18,6 +16,7 @@ import androidx.camera.core.ImageProxy
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.runBlocking
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
 
@@ -191,7 +190,8 @@ class PictureTakenFragment : Fragment() {
      * @param   imageView   The ImageView that is currently displaying an image.
      *
      * @param   charLimit   The max number of chars to return.  Data will be truncated.
-     *                      0 means no limit (default).
+     *                      0 means no limit (default).  Note this is an Int, so that
+     *                      limits the file size to 2 gigabytes (approx).
      *
      * @return  The image data converted to Base64 encoded String.
      */
@@ -203,16 +203,26 @@ class PictureTakenFragment : Fragment() {
         val byteArrayOutputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
 
-        // fixme: this needs to be in another thread as it takes a while
-        var base64encoded : String = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
-
-        // truncate
-        if ((charLimit != 0) && (base64encoded.length > charLimit)) {
-            base64encoded = base64encoded.subSequence(0, charLimit - 1) as String
-        }
-
-        return base64encoded
+        return encodeString(byteArrayOutputStream.toByteArray(), charLimit)
     }
 
+    /**
+     * Coroutine function that encodes a byteArray into a String.  Because of the large sizes, this
+     * could potentially take a while, thus the coroutine.
+     *
+     * @param   byteArray       An array of bytes that needs to be converted to a String.
+     *                          Quite likely this will be an image.
+     *
+     * @param   charLimit       The maximum length of the string to be created.
+     */
+    private fun encodeString (byteArray : ByteArray, charLimit : Int = 0) : String = runBlocking {
+        var str = Base64.encodeToString(byteArray, Base64.DEFAULT)
+
+        // truncate
+        if ((charLimit != 0) && (str.length > charLimit)) {
+            str = str.subSequence(0, charLimit - 1) as String
+        }
+        str     // this value is returned
+    }
 
 }
